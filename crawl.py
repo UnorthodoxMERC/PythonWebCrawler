@@ -26,5 +26,5 @@ def get_urls_from_html(html: str, base_url: str):
     if not anchors:
         return []
     urls = [href for anchor in anchors if (href := anchor.get('href')) is not None]
-    parsed_urls = [urllib.parse.urljoin(base_url, link) for link in urls]
+    parsed_urls = [urljoin(base_url, link) for link in urls]
     return parsed_urls
