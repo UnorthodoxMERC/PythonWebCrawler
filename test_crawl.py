@@ -1,5 +1,5 @@
 import unittest
-from crawl import normalize_url, get_heading_from_html, get_first_paragraph_from_html, get_urls_from_html
+from crawl import normalize_url, get_heading_from_html, get_first_paragraph_from_html, get_urls_from_html, get_images_from_html
 
 
 
@@ -125,6 +125,34 @@ class TestCrawl(unittest.TestCase):
         input_body = '<html><body><a href="https://crawler-test.com"><span>Boot.dev</span></a><a href="https://www.google.com"</a></body></html>'
         actual = get_urls_from_html(input_body, input_url)
         expected = ['https://crawler-test.com', 'https://www.google.com']
+        self.assertEqual(actual, expected)
+
+    def test_get_urls_from_html_2(self):
+        input_url = 'https://crawler-test.com'
+        input_body = '<html><body><p>Some Text.</p><a>anchor</a></body></html>'
+        actual = get_urls_from_html(input_body, input_url)
+        expected = []
+        self.assertEqual(actual, expected)
+
+    def test_get_images_from_html(self):
+        input_url = 'https://crawler-test.com'
+        input_body = '<html><body><img src="/logo.png" alt="Logo"></body></html>'
+        actual = get_images_from_html(input_body, input_url)
+        expected = ['https://crawler-test.com/logo.png']
+        self.assertEqual(actual, expected)
+
+    def test_get_images_from_html_1(self):
+        input_url = 'https://crawler-test.com'
+        input_body = '<html><body><img src="/logo.png" alt="Logo"><img src="/dog.png" alt="Dog"></body></html>'
+        actual = get_images_from_html(input_body, input_url)
+        expected = ['https://crawler-test.com/logo.png', 'https://crawler-test.com/dog.png']
+        self.assertEqual(actual, expected)
+
+    def test_get_images_from_html_2(self):
+        input_url = 'https://crawler-test.com'
+        input_body = '<html><body><img alt="Logo"></body></html>'
+        actual = get_images_from_html(input_body, input_url)
+        expected = []
         self.assertEqual(actual, expected)
 
 if __name__ == "__main__":

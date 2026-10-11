@@ -28,3 +28,12 @@ def get_urls_from_html(html: str, base_url: str):
     urls = [href for anchor in anchors if (href := anchor.get('href')) is not None]
     parsed_urls = [urljoin(base_url, link) for link in urls]
     return parsed_urls
+
+def get_images_from_html(html: str, base_url: str):
+    soup = BeautifulSoup(html, 'html.parser')
+    images = soup('img')
+    if not images:
+        return []
+    srcs = [src for image in images if (src := image.get('src')) is not None]
+    parsed_images = [urljoin(base_url, src) for src in srcs]
+    return parsed_images
